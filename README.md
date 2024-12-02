@@ -13,4 +13,4 @@ fd -e lua | entr lua -l setup day01.lua
 ```
 
 - https://stackoverflow.com/questions/11201262/how-to-read-data-from-a-file-in-lua#answer-46297236
-- https://martin-fieber.de/blog/goodbye-snake-i-go-to-the-moon/
+- https://martin-fieber.de/series/lua/

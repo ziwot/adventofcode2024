@@ -1,26 +1,7 @@
 local inspect = require("inspect")
+local utils = require("utils")
 
-local read_file = function(path)
-	local file = io.open(path, "rb")
-	if not file then
-		return nil
-	end
-
-	local lines = {}
-
-	for line in io.lines(path) do
-		local words = {}
-		for word in line:gmatch("%w+") do
-			table.insert(words, word)
-		end
-		table.insert(lines, words)
-	end
-
-	file:close()
-	return lines
-end
-
-local input = read_file("./day01_input.txt")
+local input = utils.read_file("./day01.txt")
 
 local left = {}
 local right = {}
