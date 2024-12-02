@@ -20,4 +20,24 @@ M.read_file = function(path)
 	return lines
 end
 
+M.filter_inplace = function(t, filterIter)
+	local out = {}
+
+	for k, v in pairs(t) do
+		if filterIter(v, k, t) then
+			table.insert(out, v)
+		end
+	end
+
+	return out
+end
+
+M.tablelength = function(T)
+	local count = 0
+	for _ in pairs(T) do
+		count = count + 1
+	end
+	return count
+end
+
 return M
