@@ -3,12 +3,7 @@ local utils = require("utils")
 
 local input = utils.read_file("./day02.txt")
 
--- just filter out from input..
--- for i, v in ipairs(input) do
---
--- end
-
-local safe = utils.filter_inplace(input, function(v, k)
+local safe = utils.filter_inplace(input, function(v)
 	local prev = nil
 	local order = nil
 	local currOrder = nil
@@ -16,7 +11,6 @@ local safe = utils.filter_inplace(input, function(v, k)
 	for _, vv in ipairs(v) do
 		if prev ~= nil then
 			if prev == vv then
-				print(k)
 				return false
 			elseif prev < vv then
 				currOrder = ">"
@@ -29,14 +23,12 @@ local safe = utils.filter_inplace(input, function(v, k)
 			end
 
 			if order ~= currOrder then
-				print(k)
 				return false
 			end
 
 			local distance = math.abs(prev - vv)
 
 			if distance < 1 or distance > 3 then
-				print(k)
 				return false
 			end
 		end
