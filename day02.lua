@@ -3,7 +3,7 @@ local utils = require("utils")
 
 local input = utils.read_file("./day02.txt")
 
-local safe = utils.filter_inplace(input, function(v)
+local safeReportFilter = function(v)
 	local prev = nil
 	local order = nil
 	local currOrder = nil
@@ -39,9 +39,8 @@ local safe = utils.filter_inplace(input, function(v)
 	end
 
 	return true
-end)
-
-for _, v in ipairs(safe) do
-	print(inspect(v))
 end
+
+-- pt 1.
+local safe = utils.filter_inplace(input, safeReportFilter)
 print(#safe)
