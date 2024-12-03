@@ -9,10 +9,12 @@ local safe = utils.filter_inplace(input, function(v)
 	local currOrder = nil
 
 	for _, vv in ipairs(v) do
+		local n = tonumber(vv)
+
 		if prev ~= nil then
-			if prev == vv then
+			if prev == n then
 				return false
-			elseif prev < vv then
+			elseif prev < n then
 				currOrder = ">"
 			else
 				currOrder = "<"
@@ -26,17 +28,20 @@ local safe = utils.filter_inplace(input, function(v)
 				return false
 			end
 
-			local distance = math.abs(prev - vv)
+			local distance = math.abs(prev - n)
 
 			if distance < 1 or distance > 3 then
 				return false
 			end
 		end
 
-		prev = vv
+		prev = n
 	end
 
 	return true
 end)
 
+for _, v in ipairs(safe) do
+	print(inspect(v))
+end
 print(#safe)
