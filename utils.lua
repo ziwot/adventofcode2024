@@ -32,4 +32,16 @@ M.filter_inplace = function(t, filterIter)
 	return out
 end
 
+M.tablecontains = function(t, v)
+	if next(t) == nil then
+		return false
+	else
+		for i = 1, #t do
+			if t[i] == v then
+				return true
+			end
+		end
+		return false
+	end
+end
 return M
