@@ -1,39 +1,40 @@
-local inspect = require("inspect")
 local utils = require("utils")
 
-local input = utils.read_file("./day01.txt")
+local data = utils.read_file_to_table(..., "%w+")
 
-local left = {}
-local right = {}
+-- distance totale
+-- retoune la somme des différence entre 2 element d'une table
+local function total_distance(locations)
+	local l, r = utils.split_locations(locations)
 
-for _, v in ipairs(input) do
-	print(v[2])
-	table.insert(left, v[1])
-	table.insert(right, v[2])
+	table.sort(l)
+	table.sort(r)
+
+	local td = 0
+	for i, v in pairs(l) do
+		td = td + math.abs(v - r[i])
+	end
+
+	return td
 end
 
-table.sort(left)
-table.sort(right)
+-- score de similitude
+local function similarity_score(locations)
+	local l, r = utils.split_locations(locations)
+	local score = 0
 
-local distance_sum = 0
-
-for i, v in ipairs(left) do
-	distance_sum = distance_sum + math.abs(v - right[i])
-end
-
-local similarity_score = 0
-
-for _, vl in ipairs(left) do
-	local count = 0
-	for _, vr in ipairs(right) do
-		if vl == vr then
-			count = count + 1
+	for _, vl in pairs(l) do
+		local count = 0
+		for _, vr in pairs(r) do
+			if vl == vr then
+				count = count + 1
+			end
 		end
+		score = score + (vl * count)
 	end
-	if count > 0 then
-		similarity_score = similarity_score + (vl * count)
-	end
+
+	return score
 end
 
-print(distance_sum)
-print(similarity_score)
+print(total_distance(data))
+print(similarity_score(data))

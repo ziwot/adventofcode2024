@@ -1,41 +1,38 @@
-local inspect = require("inspect")
 local utils = require("utils")
 
-local input = utils.read_file("./day02.txt")
+local function bad_levels(v)
+	local prev, order, curr_order, levels = nil, nil, nil, {}
 
-local bad_levels = function(v)
-	local prev = nil
-	local order = nil
-	local curr_order = nil
-	local levels = {}
-
-	local add_level = function(t, i)
+	local function add_level(i)
 		if i > 1 then
-			if false == utils.tablecontains(t, i - 1) then
-				table.insert(t, i - 1)
+			if false == utils.tablecontains(levels, i - 1) then
+				table.insert(levels, i - 1)
 			end
+
 			if i > 2 then
-				if false == utils.tablecontains(t, i - 2) then
-					table.insert(t, i - 2)
+				if false == utils.tablecontains(levels, i - 2) then
+					table.insert(levels, i - 2)
 				end
 			end
 		end
-		if false == utils.tablecontains(t, i) then
-			table.insert(t, i)
+
+		if false == utils.tablecontains(levels, i) then
+			table.insert(levels, i)
 		end
+
 		if i < #v then
-			if false == utils.tablecontains(t, i + 1) then
-				table.insert(t, i + 1)
+			if false == utils.tablecontains(levels, i + 1) then
+				table.insert(levels, i + 1)
 			end
 		end
 	end
 
-	for i, vv in ipairs(v) do
+	for i, vv in pairs(v) do
 		local n = tonumber(vv)
 
 		if prev ~= nil then
 			if prev == n then
-				add_level(levels, i)
+				add_level(i)
 			else
 				if prev < n then
 					curr_order = ">"
@@ -48,12 +45,12 @@ local bad_levels = function(v)
 				end
 
 				if order ~= curr_order then
-					add_level(levels, i)
+					add_level(i)
 				else
 					local distance = math.abs(prev - n)
 
 					if distance < 1 or distance > 3 then
-						add_level(levels, i)
+						add_level(i)
 					end
 				end
 			end
@@ -65,7 +62,7 @@ local bad_levels = function(v)
 	return levels
 end
 
-local safe_report_filter = function(v)
+local function safe_report_filter(v)
 	local bl = bad_levels(v)
 
 	if #bl > 0 then
@@ -75,13 +72,13 @@ local safe_report_filter = function(v)
 	return true
 end
 
-local dampener_safe_report_filter = function(v)
+local function dampener_safe_report_filter(v)
 	local bl = bad_levels(v)
 
 	if #bl > 0 then
-		for _, i in ipairs(bl) do
+		for _, i in pairs(bl) do
 			local vv = {}
-			for j, vvv in ipairs(v) do
+			for j, vvv in pairs(v) do
 				if i ~= j then
 					table.insert(vv, vvv)
 				end
@@ -93,15 +90,13 @@ local dampener_safe_report_filter = function(v)
 			end
 		end
 
-		print(inspect(v), inspect(bl))
-
 		return false
 	end
 
 	return true
 end
 
--- pt 1.
-local safe = utils.filter_inplace(input, safe_report_filter)
-local dampener_safe = utils.filter_inplace(input, dampener_safe_report_filter)
+local data = utils.read_file_to_table(..., "%w+")
+local safe = utils.filter_inplace(data, safe_report_filter)
+local dampener_safe = utils.filter_inplace(data, dampener_safe_report_filter)
 print(#safe, #dampener_safe)
